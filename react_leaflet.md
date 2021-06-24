@@ -1,3 +1,5 @@
+# React-Leaflet
+
 ## Learning Objectives
  - Learn how to use Leaflet with React
  - Create a simple application displaying coordinates on a map
