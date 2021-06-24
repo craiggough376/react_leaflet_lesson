@@ -83,9 +83,12 @@ touch src/components/MapBox.js
 Fill out the MapBox component with the following example that can be found on react-leaflets website.
 ```js
 // MapBox.js
-
+import React from 'react'
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet'
 
+const MapBox = () => {
+
+return(
   <MapContainer center={[51.505, -0.09]} zoom={13} scrollWheelZoom={true}>
     <TileLayer
         attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
@@ -97,6 +100,9 @@ import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet'
         </Popup>
     </Marker>
   </MapContainer>
+)
+
+export default MapBox;
 ```
 
 Remember to render your MapBox component in App.js
@@ -107,12 +113,73 @@ import MapBox from './components/MapBox.js'
 
  return (
     <div className="App">
-      <MapBox munros={munros} /> 
+      <MapBox /> 
     </div>
   );
 ```
 
 You should now be able to see the map rendering to the page with the coordinates centered on London and an example marker and Popup. 
+
+Lets now render our own markers, showing a marker for each munro from the API. Each munro object in state has coordinates for the latitude and longitude. We can use these to create a new array of markers that the map can render. 
+
+First, make sure you are now passing the munros from state, down into our MapBox component.
+
+```js
+// App.js
+
+    <div className="App">
+      <MapBox munros={munros}/> //added
+    </div>
+```
+And that we are destructuring the prop in map box: 
+
+```js
+// MapBox.js
+const MapBox = ({munros}) => {
+```
+
+Lets start by centering our map by default onto Scotland by adding differenct center coordiantes and set the zoom. We will also allow the map to have a scrollable zoom:
+
+```js
+<MapContainer center={[56.8169, -4.1826]} zoom={7} scrollWheelZoom={true}>
+```
+
+We Can now use our munro array passed down as props, to make a single marker for each munro. 
+
+```js
+const MapBox = ({munros}) => {
+
+    const munroMarkers = munros.map((munro, index) => {
+        return (
+            <Marker key={index} position={[munro.latlng_lat, munro.latlng_lng]}>
+                <Popup>
+                    <h3>{munro.name}</h3>
+                    <h4>Height: {munro.height} meters</h4>
+                    <p>Meaning: {munro.meaning}</p>
+                </Popup>
+            </Marker>
+        )
+    })
+
+    return(
+```
+This will create a marker, and when clicked on, can show more details about the munro through a popup.
+Last thing is to render these markers onto our map.
+
+```js
+<MapContainer center={[56.8169, -4.1826]} zoom={7} scrollWheelZoom={true}>
+    <TileLayer
+        attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+    />
+    {munroMarkers}
+</MapContainer>
+```
+
+Now we should have rendered our map with react-leaflet and be able to show data through markers and popups. 
+
+
+
 
 
 
