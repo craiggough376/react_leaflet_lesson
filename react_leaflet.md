@@ -75,6 +75,8 @@ to a browserlist array like this:
 
 Were now ready to use leaflet and see a map in our application.
 
+### Rendering a Map
+
 Lets create a MapBox component
 
 ```bash
@@ -121,6 +123,8 @@ import MapBox from './components/MapBox.js'
 ```
 
 You should now be able to see the map rendering to the page with the coordinates centered on London and an example marker and Popup. 
+
+### Rendering Markers and Popups
 
 Lets now render our own markers, showing a marker for each munro from the API. Each munro object in state has coordinates for the latitude and longitude. We can use these to create a new array of markers that the map can render. 
 
@@ -179,6 +183,9 @@ Last thing is to render these markers onto our map.
 ```
 
 Now we should have rendered our map with react-leaflet and be able to show data through markers and popups. 
+
+
+### Changing the center
 
 
 
