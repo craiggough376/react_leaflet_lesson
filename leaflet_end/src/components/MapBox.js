@@ -13,7 +13,7 @@ const MapBox = ({munros}) => {
     const handleMarkerClick = (munro) => {
         setCenter({
             coordinates: [munro.latlng_lat, munro.latlng_lng],
-        zoom: 7
+        zoom: 13
         })
     }
 
@@ -38,7 +38,7 @@ const MapBox = ({munros}) => {
                 attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             />
-            <MapCenter center={center}/>
+            <MapCenter center={center.coordinates} zoom={center.zoom}/>
             {munroMarkers}
             </MapContainer>
         </>

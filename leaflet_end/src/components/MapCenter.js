@@ -1,9 +1,6 @@
-import { useMapEvent } from 'react-leaflet'
-export const MapCenter = () => {
-    const map = useMapEvent('click', (event) => {
-        console.log(event)
-        const {lat, lng} = event.latlng
-        map.flyTo([lat, lng])
-      })
-      return null
+import { useMap } from 'react-leaflet'
+export const MapCenter = ({center, zoom}) => {
+    const map = useMap()
+    map.flyTo([center[0], center[1]],zoom)
+    return null
 }
