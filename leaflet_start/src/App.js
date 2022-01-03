@@ -1,4 +1,5 @@
 import './App.css';
+import MapBox from './components/MapBox.js'
 import {useState, useEffect} from 'react';
 
 function App() {
@@ -18,7 +19,7 @@ function App() {
 
   return (
     <div className="App">
-
+      <MapBox munros={munros}/> 
     </div>
   );
 }

@@ -72,8 +72,10 @@ to a browserlist array like this:
     "not op_mini all"
   ]
   ```
+*** Important - Since you have now changed the package json file, you will need to npm install again, then npm start to relaunch the local server.
 
 Were now ready to use leaflet and see a map in our application.
+
 
 ### Rendering a Map
 
@@ -105,6 +107,7 @@ return(
     </Marker>
   </MapContainer>
 )
+}
 
 export default MapBox;
 ```
@@ -150,7 +153,7 @@ Lets start by centering our map by default onto Scotland by adding differenct ce
 <MapContainer center={[56.8169, -4.1826]} zoom={7} scrollWheelZoom={true}>
 ```
 
-We Can now use our munro array passed down as props, to make a single marker for each munro. 
+We Can now use our munro array passed down as props to create a new array of markers with the munro data.
 
 ```js
 const MapBox = ({munros}) => {
@@ -178,8 +181,7 @@ Last thing is to render these markers onto our map.
         attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
     />
-    <MapCentre center={coordinates} zoom={5}/>
-    {munroMarkers}
+    {munroMarkers} // replaces <Marker />
 </MapContainer>
 ```
 
@@ -194,12 +196,22 @@ We need to make a component that can consume the context of the map container.
 ```bash
 touch src/components/MapCentre.js 
 ```
+
+```js
+//MapCentre.js
+import React from 'react'
+
+const MapCentre = () => {
+  return null
+}
+export default MapCentre;
+```
+
 In this file we will create a function to change both the center point and the zoom. In order to trigger a rerender of the Map and for the changes to be seen, we will hold onto the zoom and center in state with a default object holding onto the initial values.
 
 ```js
 //MapBox.js
 import React, { useState } from 'react' //added
-import { MapCenter } from './MapCenter'
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet'
 
 const MapBox = ({munros}) => {
@@ -218,9 +230,15 @@ To get the coordiantes of the current monro, we will add an event handler to lis
 //MapBox.js
  const munroMarkers = munros.map((munro, index) => {
         return (
-            <Marker key={index} position={[munro.latlng_lat, munro.latlng_lng]}  eventHandlers={{ //added
-                click: () => handleMarkerClick(munro),
+            <Marker key={index} position={[munro.latlng_lat, munro.latlng_lng]} eventHandlers={{ //added
+                click: () => handleMarkerClick(munro), //added
               }}>
+                <Popup>
+                    <h3>{munro.name}</h3>
+                    <h4>Height: {munro.height} meters</h4>
+                    <p>Meaning: {munro.meaning}</p>
+                </Popup>
+            </Marker>
 ```
 
 We will now create the callback which has is triggered on the marker click.
@@ -247,7 +265,7 @@ Now our state has updated, we will trigger a rerender and pass the new center an
 
 ```js
 //MapBox.jsx
-import { MapCenter } from './MapCenter' //added
+import  MapCenter  from './MapCenter' //added
 
 ...
 
@@ -268,7 +286,7 @@ We will need to import the useMap hook from react-leaflet to get access to the m
 ```js
 //MapCenter.js
 import { useMap } from 'react-leaflet'
-export const MapCenter = ({center, zoom}) => {
+export const MapCentre = ({center, zoom}) => {
     const map = useMap()
     map.flyTo([center[0], center[1]],zoom)
     return null
