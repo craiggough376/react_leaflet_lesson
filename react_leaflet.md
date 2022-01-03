@@ -194,17 +194,17 @@ Lets say that we now want the map to center and zoom in on a munro that we click
 We need to make a component that can consume the context of the map container. 
 
 ```bash
-touch src/components/MapCentre.js 
+touch src/components/MapCenter.js 
 ```
 
 ```js
-//MapCentre.js
+//MapCenter.js
 import React from 'react'
 
-const MapCentre = () => {
+const MapCenter = () => {
   return null
 }
-export default MapCentre;
+export default MapCenter;
 ```
 
 In this file we will create a function to change both the center point and the zoom. In order to trigger a rerender of the Map and for the changes to be seen, we will hold onto the zoom and center in state with a default object holding onto the initial values.
@@ -286,7 +286,7 @@ We will need to import the useMap hook from react-leaflet to get access to the m
 ```js
 //MapCenter.js
 import { useMap } from 'react-leaflet'
-export const MapCentre = ({center, zoom}) => {
+export const MapCenter = ({center, zoom}) => {
     const map = useMap()
     map.flyTo([center[0], center[1]],zoom)
     return null
